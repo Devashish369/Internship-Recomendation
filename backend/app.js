@@ -12,6 +12,7 @@ import passport from 'passport';
 import pkg from 'passport-local'; // ✅ fixed
 import User from './models/user.js';
 import userRouter from './routes/user.js';
+import ExpressError from './utils/ExpressError.js'
 
 const LocalStrategy = pkg.Strategy; // ✅ fixed
 
@@ -67,10 +68,28 @@ app.use(session(sessionOption));
 app.use(passport.initialize());
 app.use(passport.session());
 
-passport.use(new LocalStrategy({ usernameField: "email" }, User.authenticate())); // ✅ better
+passport.use(new LocalStrategy({ usernameField: "email" }, User.authenticate())); 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+app.use((req, res, next) => {
+    res.locals.currentPath = req.path; // ye current URL path dega
+    next();
+});
 
 // routes
 app.use('/candidate', candidateRouter);
 app.use('/', userRouter);
+
+app.use( (req,res,next) =>{
+    next(new ExpressError(404,"Page not found"));
+});
+
+app.use((err, req, res, next) => {
+    let { statusCode = 500, message = "Something went wrong" } = err;
+
+    res.status(statusCode).json({
+        success: false,
+        message
+    });
+});

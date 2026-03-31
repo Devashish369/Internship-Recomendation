@@ -33,3 +33,24 @@ export const signup = async (req, res, next) => {
         });
     }
 };
+
+export const login = (req, res) => {
+    res.status(200).json({
+        message: "Login successful",
+        user: req.user
+    });
+};
+
+export const logout = (req, res, next) => {
+    req.logout((err) => {
+        if (err) return next(err);
+
+        req.session.destroy(() => {
+            res.clearCookie("connect.sid");
+
+            return res.status(200).json({
+                message: "Logout successful"
+            });
+        });
+    });
+};
