@@ -19,8 +19,8 @@ export default function CandidateRegister() {
             );
             alert("success");
         } catch (err) {
-            console.log(err); // 👈 ADD THIS
-            console.log(err.response); // 👈 AND THIS
+            console.log(err); 
+            console.log(err.response);
             alert(err.response?.data?.message || "Error");
         }
     };
