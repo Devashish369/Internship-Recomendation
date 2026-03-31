@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-const candidateSchema = new Schema({
+const candidateProfileSchema = new Schema({
   name: {
     type: String,
     required: true,
@@ -35,6 +35,6 @@ const candidateSchema = new Schema({
   }
 });
 
-const Candidate = mongoose.model("Candidate", candidateSchema);
+const CandidateProfile = mongoose.model("CandidateProfile", candidateProfileSchema);
 
-export default Candidate;
+export default CandidateProfile;
